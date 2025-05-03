@@ -133,7 +133,8 @@ class ChessGame:
             repetition_count = sum(1 for h in self.board.position_history if h == current_hash)
             if repetition_count > 1:
                 texts.append(f"Position repetition: {repetition_count}/3")
-        
+    
+    """
         # Display texts at the bottom of the window
         for i, text in enumerate(texts):
             text_surface = font.render(text, True, (255, 255, 255))
@@ -147,6 +148,7 @@ class ChessGame:
             pygame.draw.rect(s, (0, 0, 0, 180), s.get_rect(), border_radius=5)
             self.screen.blit(s, bg_rect)
             self.screen.blit(text_surface, text_rect)
+    """
     
     def draw_game_over_message(self):
         """Draw the game over message"""
