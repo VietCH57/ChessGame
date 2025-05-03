@@ -15,7 +15,7 @@ Usage examples are included in this repository (check simple_chess_ai.py and che
 
 Available Methods:
 
-`register_ai(self, color, ai_controller):`
+`register_ai(self, color, ai_controller):` \
     """
     Register an AI to control a specific color.
     
@@ -27,7 +27,7 @@ Available Methods:
     interface.register_ai(PieceColor.BLACK, MyCustomAI())
     """
 
-`run(self):`
+`run(self):` \
     """
     Start the main game loop with visualization.
     This method blocks until the game window is closed.
@@ -36,7 +36,7 @@ Available Methods:
     interface.run()
     """
 
-`reset_game(self):`
+`reset_game(self):` \
     """
     Reset the game to the initial state.
     Used to restart the game after completion or to initialize a new game.
@@ -45,7 +45,7 @@ Available Methods:
     interface.reset_game()
     """
 
-`get_board_state(self):`
+`get_board_state(self):` \
     """
     Get the current board state as a 2D array of piece information.
     
@@ -60,7 +60,7 @@ Available Methods:
     piece_at_a1 = board_state[7][0]  # Bottom-left corner
     """
 
-`get_valid_moves_for_color(self, color):`
+`get_valid_moves_for_color(self, color):` \
     """
     Get all valid moves for a specific color.
     
@@ -74,7 +74,7 @@ Available Methods:
     valid_moves = interface.get_valid_moves_for_color(PieceColor.WHITE)
     """
 
-`get_move(self, board_state, valid_moves):`
+`get_move(self, board_state, valid_moves):` \
     """
     Choose the next move for the AI.
     
