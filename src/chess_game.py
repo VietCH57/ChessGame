@@ -1,6 +1,7 @@
 import pygame
 import sys
 from chess_board import ChessBoard, Position, PieceType, PieceColor, Piece, Move, BOARD_SIZE, SQUARE_SIZE, WINDOW_SIZE
+from interface import ChessAIManager
 
 class ChessGame:
     def __init__(self):
@@ -16,6 +17,10 @@ class ChessGame:
         self.load_images()
         self.game_over = False
         self.result_message = ""
+        
+        # Initialize AI
+        self.ai_manager = ChessAIManager(self)
+        self.ai_enabled = False
     
     def load_images(self):
         """Load or create placeholder images for chess pieces"""
@@ -119,6 +124,12 @@ class ChessGame:
         # Current player's turn
         texts.append(f"Turn: {self.board.turn.value.capitalize()}")
         
+        # AI status
+        if self.ai_enabled:
+            white_ai = "AI" if self.ai_manager.white_ai else "Human"
+            black_ai = "AI" if self.ai_manager.black_ai else "Human"
+            texts.append(f"Players: White: {white_ai}, Black: {black_ai}")
+        
         # Check indicator
         if self.board.is_check(self.board.turn):
             texts.append(f"{self.board.turn.value.capitalize()} is in CHECK!")
@@ -127,14 +138,6 @@ class ChessGame:
         half_moves = self.board.half_move_clock
         texts.append(f"Moves since pawn/capture: {half_moves // 2}")
         
-        # Position repetition counter
-        if len(self.board.position_history) > 0:
-            current_hash = self.board.position_history[-1]
-            repetition_count = sum(1 for h in self.board.position_history if h == current_hash)
-            if repetition_count > 1:
-                texts.append(f"Position repetition: {repetition_count}/3")
-    
-    """
         # Display texts at the bottom of the window
         for i, text in enumerate(texts):
             text_surface = font.render(text, True, (255, 255, 255))
@@ -148,7 +151,6 @@ class ChessGame:
             pygame.draw.rect(s, (0, 0, 0, 180), s.get_rect(), border_radius=5)
             self.screen.blit(s, bg_rect)
             self.screen.blit(text_surface, text_rect)
-    """
     
     def draw_game_over_message(self):
         """Draw the game over message"""
@@ -182,6 +184,13 @@ class ChessGame:
         if self.game_over:
             return
             
+        # If AI is active for current player, ignore clicks
+        if self.ai_enabled:
+            current_color = self.board.turn
+            if (current_color == PieceColor.WHITE and self.ai_manager.white_ai) or \
+               (current_color == PieceColor.BLACK and self.ai_manager.black_ai):
+                return
+            
         col = pos[0] // SQUARE_SIZE
         row = pos[1] // SQUARE_SIZE
         
@@ -212,15 +221,19 @@ class ChessGame:
         if self.board.is_checkmate(self.board.turn):
             self.game_over = True
             self.result_message = f"Checkmate! {opponent_color.value.capitalize()} wins!"
+            self.ai_manager.stop_ai_game()
         elif self.board.is_stalemate(self.board.turn):
             self.game_over = True
             self.result_message = "Stalemate! Draw."
+            self.ai_manager.stop_ai_game()
         elif self.board.is_fifty_move_rule_draw():
             self.game_over = True
             self.result_message = "Draw by fifty-move rule."
+            self.ai_manager.stop_ai_game()
         elif self.board.is_threefold_repetition():
             self.game_over = True
             self.result_message = "Draw by threefold repetition."
+            self.ai_manager.stop_ai_game()
     
     def reset_game(self):
         """Reset the game to the initial state"""
@@ -228,11 +241,35 @@ class ChessGame:
         self.selected_position = None
         self.game_over = False
         self.result_message = ""
+        if self.ai_enabled:
+            self.ai_manager = ChessAIManager(self)
+            # Re-register AI if needed
+            # (Code to re-register AI would go here)
+    
+    def toggle_ai(self, white_ai=None, black_ai=None):
+        """Toggle AI players"""
+        if white_ai:
+            self.ai_manager.register_ai(white_ai, PieceColor.WHITE)
+        if black_ai:
+            self.ai_manager.register_ai(black_ai, PieceColor.BLACK)
+        
+        if white_ai or black_ai:
+            self.ai_enabled = True
+            self.ai_manager.start_ai_game()
+        else:
+            self.ai_enabled = False
+            self.ai_manager.stop_ai_game()
     
     def run(self):
         """Main game loop"""
         running = True
         while running:
+            current_time = pygame.time.get_ticks()
+            
+            # Update AI if enabled
+            if self.ai_enabled:
+                self.ai_manager.update(current_time)
+            
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
@@ -242,6 +279,14 @@ class ChessGame:
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_r and self.game_over:  # Restart game with R key
                         self.reset_game()
+                    elif event.key == pygame.K_1:  # Toggle AI playing as white
+                        self.toggle_ai(white_ai=RandomChessAI())
+                    elif event.key == pygame.K_2:  # Toggle AI playing as black
+                        self.toggle_ai(black_ai=RandomChessAI())
+                    elif event.key == pygame.K_3:  # AI vs AI
+                        self.toggle_ai(white_ai=RandomChessAI(), black_ai=RandomChessAI())
+                    elif event.key == pygame.K_0:  # Human vs Human
+                        self.toggle_ai()
             
             # Clear the screen
             self.screen.fill((0, 0, 0))

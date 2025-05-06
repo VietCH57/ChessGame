@@ -1,90 +1,81 @@
-# ChessGame
-How to install: \
-1 - Run this in any directory you want: \
+### ChessGame
+Tải xuống: \
+1 - Clone repo này: \
 git clone https://github.com/VietCH57/ChessGame.git \
-2 - cd to ChessGame, then install the pygame library: \
+2 - Chuyển đến thư mục ChessGame rồi tải thư viện pygame: \
 pip install pygame \
-3 - Use python to run the game: \
+3 - Chơi game: \
 python src/main.py
 
-# UPDATE: Added an interface for AIs
+### UPDATE: Thêm interface cho AI
 
-Usage examples are included in this repository (check simple_chess_ai.py and chess_ai_demo.py)
+Cách viết AI:
+# 1. Import các module cần thiết
+```python
+from chess_board import ChessBoard, Position, PieceType, PieceColor
+from chess_ai_interface import ChessAI
+```
 
-# YOU MUST INCLUDE `get_move` IN YOUR PROGRAM
+# 2. Tạo class kế thừa ChessAI
+```python
+class MyChessAI(ChessAI):
+    def __init__(self):
+        # Khởi tạo AI của bạn
+        pass
+        
+    def get_move(self, board: ChessBoard, color: PieceColor):
+        # Logic của AI để chọn nước đi
+        # Trả về: tuple(Position từ, Position đến)
+        pass
+```
 
-Available Methods:
+# 3. Chạy AI của bạn
+```python
+from chess_game_with_ai import ChessGame
 
-`register_ai(self, color, ai_controller):` \
-    """
-    Register an AI to control a specific color.
-    
-    Parameters:
-    - color: PieceColor.WHITE or PieceColor.BLACK
-    - ai_controller: An object with a get_move(board_state, valid_moves) method
-    
-    Example:
-    interface.register_ai(PieceColor.BLACK, MyCustomAI())
-    """
+game = ChessGame()
+game.toggle_ai(white_ai=MyChessAI())  # Cho AI chơi quân trắng
+game.run()
+```
 
-`run(self):` \
-    """
-    Start the main game loop with visualization.
-    This method blocks until the game window is closed.
-    
-    Example:
-    interface.run()
-    """
+### Thành phần cơ bản của bàn cờ:
+Vị trí:
+- position = Position(row, col)  # row và col từ 0-7
 
-`reset_game(self):` \
-    """
-    Reset the game to the initial state.
-    Used to restart the game after completion or to initialize a new game.
-    
-    Example:
-    interface.reset_game()
-    """
+Các loại quân cờ:
+- PieceType.PAWN    # Tốt
+- PieceType.ROOK    # Xe
+- PieceType.KNIGHT  # Mã
+- PieceType.BISHOP  # Tượng
+- PieceType.QUEEN   # Hậu
+- PieceType.KING    # Vua
+- PieceType.EMPTY   # Ô trống
 
-`get_board_state(self):` \
-    """
-    Get the current board state as a 2D array of piece information.
-    
-    Returns:
-    A 2D array (8x8) where each cell contains a dictionary with:
-    - "type": The type of piece (e.g., "pawn", "rook")
-    - "color": The color of the piece (e.g., "white", "black")
-    - "has_moved": Boolean indicating if the piece has moved
-    
-    Example:
-    board_state = interface.get_board_state()
-    piece_at_a1 = board_state[7][0]  # Bottom-left corner
-    """
+Màu quân cờ:
+- PieceColor.WHITE  # Trắng
+- PieceColor.BLACK  # Đen
+- PieceColor.NONE   # Không màu (cho ô trống)
 
-`get_valid_moves_for_color(self, color):` \
-    """
-    Get all valid moves for a specific color.
-    
-    Parameters:
-    - color: PieceColor enum value (PieceColor.WHITE or PieceColor.BLACK)
-    
-    Returns:
-    A list of Move objects representing all valid moves for the specified color.
-    
-    Example:
-    valid_moves = interface.get_valid_moves_for_color(PieceColor.WHITE)
-    """
+### Đối tượng Move
+Mỗi nước đi trong danh sách valid_moves là một đối tượng Move với các thuộc tính:
+- start_pos: Vị trí xuất phát
+- end_pos: Vị trí đích
+- piece: Quân cờ được di chuyển
+- captured_piece: Quân bị bắt (nếu có)
+- is_castling: True nếu là nước nhập thành
+- is_en_passant: True nếu là nước bắt tốt qua đường
 
-`get_move(self, board_state, valid_moves):` \
-    """
-    Choose the next move for the AI.
-    
-    Parameters:
-    - board_state: 2D array representing the current board state
-    - valid_moves: List of valid Move objects the AI can choose from
-    
-    Returns:
-    - A Move object from valid_moves representing the chosen move
-    
-    This method is called by the interface when it's your AI's turn to move.
-    Your AI must return one of the Move objects from the valid_moves list.
-    """
+### Các methods hữu ích từ class ChessBoard:
+- board.get_piece(position): Lấy quân cờ tại vị trí
+- board.get_valid_moves(position): Lấy danh sách các nước đi hợp lệ từ vị trí
+- board.is_check(color): Kiểm tra xem vua có đang bị chiếu không
+- board.copy_board(): Tạo bản sao của bàn cờ (để thử nghiệm nước đi)
+
+### Các files mẫu:
+Tôi có viết một số files mẫu để mọi người có thể tham khảo cấu trúc: \
+- ai_template.py \
+- run.py 
+
+### Lưu ý: TÔI BỊ NGU NÊN TÔI ĐỂ MỌI MODULES Ở TRONG SRC, \
+### NHỚ ADD DIRECTORY VÀO PATH RỒI IMPORT NẾU BẠN VIẾT Ở NGOÀI FOLDER, \
+### không thì viết luôn trong src cho chiu -.- \
