@@ -72,10 +72,10 @@ Mỗi nước đi trong danh sách valid_moves là một đối tượng Move v�
 - board.copy_board(): Tạo bản sao của bàn cờ (để thử nghiệm nước đi)
 
 ### Các files mẫu:
-Tôi có viết một số files mẫu để mọi người có thể tham khảo cấu trúc: \
-- ai_template.py \
+Tôi có viết một số files mẫu để mọi người có thể tham khảo cấu trúc: 
+- ai_template.py 
 - run.py 
 
-### Lưu ý: TÔI BỊ NGU NÊN TÔI ĐỂ MỌI MODULES Ở TRONG SRC, \
-### NHỚ ADD DIRECTORY VÀO PATH RỒI IMPORT NẾU BẠN VIẾT Ở NGOÀI FOLDER, \
-### không thì viết luôn trong src cho chiu -.- \
+### Lưu ý: TÔI BỊ NGU NÊN TÔI ĐỂ MỌI MODULES Ở TRONG SRC,
+### NHỚ ADD DIRECTORY VÀO PATH RỒI IMPORT NẾU BẠN VIẾT Ở NGOÀI FOLDER, 
+### không thì viết luôn trong src cho chiu -.- 
