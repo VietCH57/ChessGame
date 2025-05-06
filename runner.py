@@ -1,4 +1,4 @@
-from sample_ai import RandomAI, SimpleChessAI
+from sample_ai import RandomAI
 from chess_game import ChessGame
 from chess_board import PieceColor
 

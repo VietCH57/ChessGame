@@ -242,9 +242,18 @@ class ChessGame:
         self.game_over = False
         self.result_message = ""
         if self.ai_enabled:
+            # Preserve current AI settings
+            white_ai = self.ai_manager.white_ai
+            black_ai = self.ai_manager.black_ai
+                
             self.ai_manager = ChessAIManager(self)
-            # Re-register AI if needed
-            # (Code to re-register AI would go here)
+                
+            if white_ai:
+                self.ai_manager.register_ai(white_ai, PieceColor.WHITE)
+            if black_ai:
+                self.ai_manager.register_ai(black_ai, PieceColor.BLACK)
+                
+            self.ai_manager.start_ai_game()
     
     def toggle_ai(self, white_ai=None, black_ai=None):
         """Toggle AI players"""
