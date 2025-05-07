@@ -158,17 +158,17 @@ evaluation = trainer.evaluate_ai(
 ```
 
 
-Cụ thể các phương thức hữu ích trong framework này:
-# HeadlessChessGame: Chạy game không giao diện với tốc độ cao
+# Cụ thể các phương thức hữu ích trong framework này:
+HeadlessChessGame: Chạy game không giao diện với tốc độ cao
 - run_game(white_ai, black_ai, max_moves): Chạy một trận đấu
 - run_many_games(white_ai, black_ai, num_games, swap_sides, output_file): Chạy nhiều trận
 
-# ChessTrainer: Framework huấn luyện AI
+ChessTrainer: Framework huấn luyện AI
 - train_self_play(ai, num_games, opponent_ai, save_interval): Huấn luyện bằng self-play
 - evaluate_ai(ai1, ai2, num_games): Đánh giá hiệu suất AI
 - board_to_tensor(board): Chuyển bàn cờ thành tensor cho deep learning
 
-# TrainableChessAI: Lớp cơ sở cho AI có thể huấn luyện
+TrainableChessAI: Lớp cơ sở cho AI có thể huấn luyện
 - set_exploration_mode(mode): Bật/tắt chế độ khám phá ngẫu nhiên
 - save_model(filepath): Lưu model
 - load_model(filepath): Tải model đã huấn luyện
