@@ -245,14 +245,11 @@ class ChessGame:
             # Preserve current AI settings
             white_ai = self.ai_manager.white_ai
             black_ai = self.ai_manager.black_ai
-                
             self.ai_manager = ChessAIManager(self)
-                
             if white_ai:
                 self.ai_manager.register_ai(white_ai, PieceColor.WHITE)
             if black_ai:
                 self.ai_manager.register_ai(black_ai, PieceColor.BLACK)
-                
             self.ai_manager.start_ai_game()
     
     def toggle_ai(self, white_ai=None, black_ai=None):

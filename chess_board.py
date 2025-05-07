@@ -3,7 +3,7 @@ from enum import Enum
 
 # Constants
 BOARD_SIZE = 8
-SQUARE_SIZE = 80
+SQUARE_SIZE = 100
 WINDOW_SIZE = BOARD_SIZE * SQUARE_SIZE
 
 class PieceType(Enum):

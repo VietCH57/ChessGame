@@ -23,7 +23,7 @@ def main():
     # game.toggle_ai(black_ai=my_ai)
     
     """
-    Tóm lại là game.toggle_ai cho phép bạn chọn phe nào là AI, phe nào được bỏ trống thì sẽ là người chơichơi
+    Tóm lại là game.toggle_ai cho phép bạn chọn phe nào là AI, phe nào được bỏ trống thì sẽ là người chơi
     """
     # Chạy game
     game.run()
