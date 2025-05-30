@@ -1,7 +1,7 @@
-from chess_game_with_ai import ChessGame
-from chess_ai_interface import RandomChessAI
-from ai_template import MyChessAI
+from chess_game import ChessGame
 from chess_board import PieceColor
+from minimax import MinimaxChessAI
+from alphabeta import AlphaBetaChessAI
 
 def main():
     """
@@ -10,14 +10,12 @@ def main():
     # Khởi tạo game
     game = ChessGame()
     
-    # Tạo AI của bạn
-    my_ai = MyChessAI()
     
     # Cấu hình game để sử dụng AI của bạn (quân trắng)
-    game.toggle_ai(white_ai=my_ai)
+    # game.toggle_ai(white_ai=my_ai)
     
     # HOẶC, để AI của bạn chơi với AI kháckhác
-    # game.toggle_ai(white_ai=my_ai, black_ai=other_aiai())
+    game.toggle_ai(white_ai=AlphaBetaChessAI(depth=3), black_ai=AlphaBetaChessAI(depth=3))
     
     # HOẶC, để chơi lại chính AI của bạn
     # game.toggle_ai(black_ai=my_ai)
