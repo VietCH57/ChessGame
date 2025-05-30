@@ -13,7 +13,7 @@ Cách viết AI:
 # 1. Import các module cần thiết
 ```python
 from chess_board import ChessBoard, Position, PieceType, PieceColor
-from chess_ai_interface import ChessAI
+from interface import ChessAI
 ```
 
 # 2. Tạo class kế thừa ChessAI
@@ -31,7 +31,7 @@ class MyChessAI(ChessAI):
 
 # 3. Chạy AI của bạn
 ```python
-from chess_game_with_ai import ChessGame
+from chess_game import ChessGame
 
 game = ChessGame()
 game.toggle_ai(white_ai=MyChessAI())  # Cho AI chơi quân trắng
