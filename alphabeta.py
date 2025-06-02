@@ -390,28 +390,29 @@ class AlphaBetaChessAI(ChessAI):
                 # Get base material value
                 value = self.piece_values[piece.type]
                 
-                # Add position value based on piece type (simplified)
+                # Get position value based on piece type
                 position_value = 0
+                
+                # For Black pieces, we need to flip the row coordinate to get the correct table position
+                # since all tables are designed from White's perspective
+                table_row = row if piece.color == PieceColor.WHITE else 7 - row
+                
                 if piece.type == PieceType.PAWN:
-                    position_value = self.pawn_table[row][col]
+                    position_value = self.pawn_table[table_row][col]
                 elif piece.type == PieceType.KNIGHT:
-                    position_value = self.knight_table[row][col]
+                    position_value = self.knight_table[table_row][col]
                 elif piece.type == PieceType.BISHOP:
-                    position_value = self.bishop_table[row][col]
+                    position_value = self.bishop_table[table_row][col]
                 elif piece.type == PieceType.ROOK:
-                    position_value = self.rook_table[row][col]
+                    position_value = self.rook_table[table_row][col]
                 elif piece.type == PieceType.QUEEN:
-                    position_value = self.queen_table[row][col]
+                    position_value = self.queen_table[table_row][col]
                 elif piece.type == PieceType.KING:
                     # Use different tables for the king depending on game phase
                     if self.count_pieces(board) < 10:  # Simple endgame check
-                        position_value = self.king_end_table[row][col]
+                        position_value = self.king_end_table[table_row][col]
                     else:
-                        position_value = self.king_mid_table[row][col]
-                
-                # Invert position tables for black pieces
-                if piece.color == PieceColor.BLACK:
-                    position_value = position_value * -1
+                        position_value = self.king_mid_table[table_row][col]
                 
                 # Add to the total score
                 if piece.color == ai_color:
